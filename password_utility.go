@@ -24,9 +24,9 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"crypto/sha512"
+	"errors"
 	"log"
 	"regexp"
-	"errors"
 )
 
 var (
@@ -78,7 +78,7 @@ func GeneratePassword(length int) *Password {
 func GenerateVerySecurePassword(length int) *Password {
 	for {
 		p := GeneratePassword(length)
-		pc, err  := ProcessPassword(p)
+		pc, err := ProcessPassword(p)
 		if err != nil {
 			log.Fatalln(err)
 		}
