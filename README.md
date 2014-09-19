@@ -9,13 +9,24 @@ could be in a broken state at times as well.
 
 ## Installation
 
+```bash
+go get github.com/bdowns328/GoPasswordUtilities
+```
+
 ## Example
 
 ```Go
-
 package main
 
-func main() {
+import (
+	"fmt"
+	gpu "github.com/bdowns328/GoPasswordUtilities"
+)
 
+func main() {
+    // Generate a password and hash it.
+	p := gpu.GeneratePassword(10)
+	fmt.Println(p)
+	fmt.Printf("%x\n", p.MD5())
 }
 ```

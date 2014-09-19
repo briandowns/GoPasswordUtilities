@@ -53,8 +53,8 @@ type PasswordComplexity struct {
 }
 
 // Use this if you're not generating a new password.
-func NewPassword(pass string, length int) *Password {
-	p := Password{Pass: pass, Length: length}
+func NewPassword(password string) *Password {
+	p := Password{Pass: password, Length: len(password)}
 	return &p
 }
 
@@ -98,6 +98,41 @@ func (p *Password) GetLength() int {
 	return p.Length
 }
 
+// Parse the password and note its attributes.
+func ProcessPassword(p *Password) (nil, error) {
+	c := &PasswordComplexity{}
+	matchLower := regexp.MustCompile(`[a-z]`)
+	matchUpper := regexp.MustCompile(`[A-Z]`)
+	matchNumber := regexp.MustCompile(`[0-9]`)
+	matchSpecial := regexp.MustCompile(`[\!@\#\$\%\^\&\*\(\\\)\-_\=\+,\.\?\/\:\;{}\[\]~]`)
+
+	if p.Length < 8 {
+		log.Println("Password isn't long enough for evaluation.")
+		return nil, "Password isn't long enough for evaluation."
+	} else {
+		c.Length = p.Length
+	}
+
+	if matchLower.MatchString(p.Pass) {
+		c.ContainsLower = true
+		c.Score += 1
+	}
+	if matchUpper.MatchString(p.Pass) {
+		c.ContainsUpper = true
+		c.Score += 1
+	}
+	if matchNumber.MatchString(p.Pass) {
+		c.ContainsNumber = true
+		c.Score += 1
+	}
+	if matchSpecial.MatchString(p.Pass) {
+		c.ContainsSpecial = true
+		c.Score += 1
+	}
+
+	return nil, nil
+}
+
 // Get the score of the password.
 func (c *PasswordComplexity) GetScore() int {
 	return c.Score
@@ -126,35 +161,4 @@ func (c *PasswordComplexity) HasSpecial() bool {
 // Return the rating for the password.
 func (c *PasswordComplexity) ComplexityRating() string {
 	return passwordScores[c.Score]
-}
-
-// Parse the password and note its attributes.
-func (c *PasswordComplexity) ProcessPassword(p *Password) {
-	matchLower := regexp.MustCompile(`[a-z]`)
-	matchUpper := regexp.MustCompile(`[A-Z]`)
-	matchNumber := regexp.MustCompile(`[0-9]`)
-	matchSpecial := regexp.MustCompile(`[\!@\#\$\%\^\&\*\(\\\)\-_\=\+,\.\?\/\:\;{}\[\]~]`)
-
-	if p.Length < 8 {
-		log.Println("Password isn't even long enough for evaluation.")
-	} else {
-		c.Length = p.Length
-	}
-
-	if matchLower.MatchString(p.Pass) {
-		c.ContainsLower = true
-		c.Score += 1
-	}
-	if matchUpper.MatchString(p.Pass) {
-		c.ContainsUpper = true
-		c.Score += 1
-	}
-	if matchNumber.MatchString(p.Pass) {
-		c.ContainsNumber = true
-		c.Score += 1
-	}
-	if matchSpecial.MatchString(p.Pass) {
-		c.ContainsSpecial = true
-		c.Score += 1
-	}
 }
