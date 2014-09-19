@@ -1,6 +1,6 @@
-# go-password-utilities
+# GoPasswordUtilities
 
-Simple library for working with passwords.
+Simple library for working with passwords in Go.
 
 ## Warning
 
@@ -15,5 +15,7 @@ could be in a broken state at times as well.
 
 package main
 
-func 
+func main() {
+
+}
 ```
