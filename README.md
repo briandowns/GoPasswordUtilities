@@ -56,8 +56,8 @@ func main() {
     }
     fmt.Printf("Has Rating: %s\n", results.ComplexityRating())
     
-    // Generate a Very secure password
-    p := gpu.GenerateVerySecurePassword(10)
+    // Generate a Very Strong password
+    p := gpu.GenerateVeryStrongPassword(10)
     fmt.Println(p.Pass)
 }
 ```

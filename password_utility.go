@@ -74,8 +74,8 @@ func GeneratePassword(length int) *Password {
 	return NewPassword(passwordBuffer.String())
 }
 
-// Generate a "Very Secure" password.
-func GenerateVerySecurePassword(length int) *Password {
+// Generate a "Very Strong" password.
+func GenerateVeryStrongPassword(length int) *Password {
 	for {
 		p := GeneratePassword(length)
 		pc, err := ProcessPassword(p)
