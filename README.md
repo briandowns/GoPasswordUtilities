@@ -28,5 +28,12 @@ func main() {
 	p := gpu.GeneratePassword(10)
 	fmt.Println(p)
 	fmt.Printf("%x\n", p.MD5())
+	
+	// Get all the password info
+    results, err := gpu.ProcessPassword(p)
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Printf("Has Rating: %s\n", results.ComplexityRating())
 }
 ```
