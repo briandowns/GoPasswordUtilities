@@ -99,7 +99,7 @@ func (p *Password) GetLength() int {
 }
 
 // Parse the password and note its attributes.
-func ProcessPassword(p *Password) (nil, error) {
+func ProcessPassword(p *Password) error {
 	c := &PasswordComplexity{}
 	matchLower := regexp.MustCompile(`[a-z]`)
 	matchUpper := regexp.MustCompile(`[A-Z]`)
@@ -108,7 +108,7 @@ func ProcessPassword(p *Password) (nil, error) {
 
 	if p.Length < 8 {
 		log.Println("Password isn't long enough for evaluation.")
-		return nil, "Password isn't long enough for evaluation."
+		return "Password isn't long enough for evaluation."
 	} else {
 		c.Length = p.Length
 	}
@@ -130,7 +130,7 @@ func ProcessPassword(p *Password) (nil, error) {
 		c.Score += 1
 	}
 
-	return nil, nil
+	return nil
 }
 
 // Get the score of the password.
