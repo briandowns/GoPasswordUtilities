@@ -56,17 +56,8 @@ func main() {
     }
     fmt.Printf("Has Rating: %s\n", results.ComplexityRating())
     
-    // Only generate a very secure password or level of your choosing.
-    for {
-        p := gpu.GeneratePassword(10)
-        pc, err  := gpu.ProcessPassword(p)
-        if err != nil {
-            log.Fatalln(err)
-        }
-        if pc.Score == 4 {
-            fmt.Printf("Secure Password: %s\n", p.Pass)
-            break
-        }
-    }
+    // Generate a Very secure password
+    p := gpu.GenerateVerySecurePassword(10)
+    fmt.Println(p.Pass)
 }
 ```

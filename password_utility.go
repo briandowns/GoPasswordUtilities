@@ -77,6 +77,20 @@ func GeneratePassword(length int) *Password {
 	return p
 }
 
+// Generate a "Very Secure" password.
+func GenerateVerySecurePassword(length int) *Password {
+	for {
+		p := GeneratePassword(length)
+		pc, err  := ProcessPassword(p)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if pc.Score == 4 {
+			return p
+		}
+	}
+}
+
 // Generate a MD5 sum for the given password.
 func (p *Password) MD5() [16]byte {
 	return md5.Sum([]byte(p.Pass))
@@ -162,18 +176,4 @@ func (c *PasswordComplexity) HasSpecial() bool {
 // Return the rating for the password.
 func (c *PasswordComplexity) ComplexityRating() string {
 	return passwordScores[c.Score]
-}
-
-// Generate a "Very Secure" password.
-func GenerateVerySecurePassword(length int) *Password {
-	for {
-		p := GeneratePassword(length)
-		pc, err  := ProcessPassword(p)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		if pc.Score == 4 {
-			return p
-		}
-	}
 }
