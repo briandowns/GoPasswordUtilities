@@ -26,6 +26,7 @@ import (
 	"crypto/sha512"
 	"log"
 	"regexp"
+	"errors"
 )
 
 var (
@@ -108,7 +109,7 @@ func ProcessPassword(p *Password) error {
 
 	if p.Length < 8 {
 		log.Println("Password isn't long enough for evaluation.")
-		return "Password isn't long enough for evaluation."
+		return errors.New("Password isn't long enough for evaluation.")
 	} else {
 		c.Length = p.Length
 	}
