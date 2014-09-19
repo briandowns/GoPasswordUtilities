@@ -71,9 +71,10 @@ func GeneratePassword(length int) *Password {
 			passwordBuffer.WriteString(string(char))
 		}
 	}
-	p := &Password{Pass: passwordBuffer.String(),
-		Length: len(passwordBuffer.String()),
-	}
+	//p := &Password{Pass: passwordBuffer.String(),
+	//	Length: len(passwordBuffer.String()),
+	//}
+	p := NewPassword(passwordBuffer.String())
 	return p
 }
 
