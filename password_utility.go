@@ -71,11 +71,8 @@ func GeneratePassword(length int) *Password {
 			passwordBuffer.WriteString(string(char))
 		}
 	}
-	//p := &Password{Pass: passwordBuffer.String(),
-	//	Length: len(passwordBuffer.String()),
-	//}
-	p := NewPassword(passwordBuffer.String())
-	return p
+	//p := NewPassword(passwordBuffer.String())
+	return NewPassword(passwordBuffer.String())
 }
 
 // Generate a "Very Secure" password.
