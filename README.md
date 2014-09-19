@@ -1,6 +1,6 @@
 # GoPasswordUtilities
 
-Simple library for working with passwords in Go.
+Simple library for working with passwords in Go (Golang).
 
 ## Warning
 
