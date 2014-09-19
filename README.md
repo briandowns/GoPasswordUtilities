@@ -2,6 +2,14 @@
 
 Simple library for working with passwords in Go (Golang).
 
+For more detail about the library and its features, reference your local godoc once installed.
+
+## Documentation
+
+```bash
+godoc -http=:6060
+```
+
 ## Warning
 
 This library is in alpha and will be subject to change.  Use with caution.  There's also a damn good chance it 

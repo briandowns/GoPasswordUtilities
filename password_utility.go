@@ -15,6 +15,9 @@
 //
 // Simple library for working with passwords in Go.
 //
+// All generated passwords are going to be a minimum of 8
+// characters in length.
+//
 
 package GoPasswordUtilities
 
