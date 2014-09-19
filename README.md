@@ -33,7 +33,7 @@ func main() {
     pass := gpu.NewPassword("secret12")
     fmt.Println(*pass)
 	
-	// Generate 10000 passwords
+	// Generate 10,000 passwords
     // On the fly compile and execution.  Better once
     // statically compiled.
     // 0.19s user 0.07s system 84% cpu 0.303 total
@@ -55,5 +55,18 @@ func main() {
         fmt.Println(err)
     }
     fmt.Printf("Has Rating: %s\n", results.ComplexityRating())
+    
+    // Only generate a very secure password or level of your choosing.
+    for {
+        p := gpu.GeneratePassword(10)
+        pc, err  := gpu.ProcessPassword(p)
+        if err != nil {
+            log.Fatalln(err)
+        }
+        if pc.Score == 4 {
+            fmt.Printf("Secure Password: %s\n", p.Pass)
+            break
+        }
+    }
 }
 ```
