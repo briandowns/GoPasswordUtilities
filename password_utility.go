@@ -163,3 +163,17 @@ func (c *PasswordComplexity) HasSpecial() bool {
 func (c *PasswordComplexity) ComplexityRating() string {
 	return passwordScores[c.Score]
 }
+
+// Generate a "Very Secure" password.
+func GenerateVerySecurePassword(length int) *Password {
+	for {
+		p := GeneratePassword(length)
+		pc, err  := ProcessPassword(p)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		if pc.Score == 4 {
+			return p
+		}
+	}
+}
