@@ -30,6 +30,7 @@ import (
 	"errors"
 	"log"
 	"regexp"
+	"fmt"
 )
 
 var (
@@ -54,6 +55,10 @@ type PasswordComplexity struct {
 	ContainsLower   bool
 	ContainsNumber  bool
 	ContainsSpecial bool
+}
+
+type SaltConf struct {
+	Length int
 }
 
 // Use this if you're not generating a new password.
@@ -91,19 +96,48 @@ func GenerateVeryStrongPassword(length int) *Password {
 	}
 }
 
+// Generate random bytes.
+func getRandomBytes(length int) []byte {
+	randomData := make([]byte, length)
+	if _, err := rand.Read(randomData); err != nil {
+		log.Fatalf("%v\n", err)
+	}
+	return randomData
+}
+
 // Generate a MD5 sum for the given password.
 func (p *Password) MD5() [16]byte {
 	return md5.Sum([]byte(p.Pass))
 }
 
-// Generate a SHA256 sum for the given password.
-func (p *Password) SHA256() [32]byte {
-	return sha256.Sum256([]byte(p.Pass))
+// Generate a SHA256 sum for the given password.  If a SaltConf
+// pointer is given as a parameter a salt with the given
+// length will be returned with it included in the hash.
+func (p *Password) SHA256(saltConf ...*SaltConf) ([32]byte, []byte) {
+	if len(saltConf) > 0 {
+		var saltLength int
+		for _, i := range saltConf[0:] {
+			saltLength = i.Length
+		}
+		salt := getRandomBytes(saltLength)
+		return sha256.Sum256([]byte(fmt.Sprintf("%s%x", p.Pass, salt))), salt
+	}
+	return sha256.Sum256([]byte(p.Pass)), nil
 }
 
-// Generate a SHA512 sum for the given password.
-func (p *Password) SHA512() [64]byte {
-	return sha512.Sum512([]byte(p.Pass))
+// Generate a SHA512 sum for the given password.  If a SaltConf
+// pointer is given as a parameter a salt with the given
+// length will be returned with it included in the hash.
+func (p *Password) SHA512(saltConf ...*SaltConf) ([64]byte, []byte) {
+	if len(saltConf) > 0 {
+		var saltLength int
+		for _, i := range saltConf[0:] {
+			saltLength = i.Length
+		}
+		salt := getRandomBytes(saltLength)
+		return sha512.Sum512([]byte(fmt.Sprintf("%s%x", p.Pass, salt))), salt
+	}
+	return sha512.Sum512([]byte(p.Pass)), nil
 }
 
 // Get the length of the password.  This method is being put on the
