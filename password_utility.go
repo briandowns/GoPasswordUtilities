@@ -28,9 +28,9 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 	"errors"
+	"fmt"
 	"log"
 	"regexp"
-	"fmt"
 )
 
 var (

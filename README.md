@@ -67,5 +67,11 @@ func main() {
     // Generate a Very Strong password
     p := gpu.GenerateVeryStrongPassword(10)
     fmt.Println(p.Pass)
+    
+    // Hash a password that includes a salt
+    p := gpu.GeneratePassword(10)
+    fmt.Println(p)
+    fmt.Printf("%x\n", p.MD5())
+    fmt.Printf("%x\n", p.MD5(&gpu.SaltConf{Length: 32}))    
 }
 ```
