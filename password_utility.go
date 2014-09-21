@@ -63,8 +63,8 @@ type SaltConf struct {
 
 // Use this if you're not generating a new password.
 func NewPassword(password string) *Password {
-	p := Password{Pass: password, Length: len(password)}
-	return &p
+	//p := Password{Pass: password, Length: len(password)}
+	return &Password{Pass: password, Length: len(password)}
 }
 
 // Generate and return a password as a string and as a
@@ -105,9 +105,19 @@ func getRandomBytes(length int) []byte {
 	return randomData
 }
 
-// Generate a MD5 sum for the given password.
-func (p *Password) MD5() [16]byte {
-	return md5.Sum([]byte(p.Pass))
+// Generate a MD5 sum for the given password.  If a SaltConf
+// pointer is given as a parameter a salt with the given
+// length will be returned with it included in the hash.
+func (p *Password) MD5(saltConf ...*SaltConf) ([16]byte, []byte) {
+	if len(saltConf) > 0 {
+		var saltLength int
+		for _, i := range saltConf[0:] {
+			saltLength = i.Length
+		}
+		salt := getRandomBytes(saltLength)
+		return md5.Sum([]byte(fmt.Sprintf("%s%x", p.Pass, salt))), salt
+	}
+	return md5.Sum([]byte(p.Pass)), nil
 }
 
 // Generate a SHA256 sum for the given password.  If a SaltConf
@@ -147,7 +157,7 @@ func (p *Password) GetLength() int {
 	return p.Length
 }
 
-// Parse the password and note its attributes.
+// Parse the password and populate the PasswordComplexity struct.
 func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 	c := &PasswordComplexity{}
 	matchLower := regexp.MustCompile(`[a-z]`)
