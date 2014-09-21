@@ -61,9 +61,9 @@ type SaltConf struct {
 	Length int
 }
 
-// Use this if you're not generating a new password.
+// Used for user entered passwords as well as the
+// GeneratePassword function.
 func NewPassword(password string) *Password {
-	//p := Password{Pass: password, Length: len(password)}
 	return &Password{Pass: password, Length: len(password)}
 }
 
