@@ -88,5 +88,4 @@ func main() {
     hash2, salt := p.SHA256(&gpu.SaltConf{Length: 32})
     fmt.Printf("%x\n", hash1)
     fmt.Printf("%x - %x\n", hash2, salt)   
-}
 ```
