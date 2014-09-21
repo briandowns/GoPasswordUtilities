@@ -21,7 +21,9 @@ could be in a broken state at times as well.
 go get github.com/bdowns328/GoPasswordUtilities
 ```
 
-## Example
+## Examples
+
+### Import the package, generate a password and hash it.
 
 ```Go
 package main
@@ -32,18 +34,29 @@ import (
 )
 
 func main() {
-    // Generate a password and hash it.
 	p := gpu.GeneratePassword(10)
 	fmt.Println(p)
 	fmt.Printf("%x\n", p.MD5())
-	
-	// Create a new password object
+```
+
+### Create a new password object and get its information
+
+```Go
     pass := gpu.NewPassword("secret12")
     fmt.Println(*pass)
-	
-	// Generate 10,000 passwords
-    // On the fly compile and execution.  Better once
-    // statically compiled.
+    
+    results, err := gpu.ProcessPassword(pass)
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Printf("Has Rating: %s\n", results.ComplexityRating())
+```
+
+### Generate 10,000 passwords.
+
+```Go
+    // On the fly compile and execution.  Better 
+    ///once statically compiled.
     // 0.19s user 0.07s system 84% cpu 0.303 total
     passChan := make(chan *gpu.Password, 10000)
     go func() {
@@ -56,19 +69,18 @@ func main() {
     for pass := range passChan {
         fmt.Printf("%s\n", pass.Pass)
     }
-    	
-	// Get all the password info
-    results, err := gpu.ProcessPassword(p)
-    if err != nil {
-        fmt.Println(err)
-    }
-    fmt.Printf("Has Rating: %s\n", results.ComplexityRating())
-    
-    // Generate a Very Strong password
+```
+
+### Generate a Very Strong password.
+ 
+```Go
     p := gpu.GenerateVeryStrongPassword(10)
     fmt.Println(p.Pass)
-    
-    // Hash a password that includes a salt
+```
+
+### Hash a password that includes a generated salt.
+
+```Go
     p := gpu.GeneratePassword(10)
     fmt.Println(p.Pass)
     hash1, _ := p.SHA256()
