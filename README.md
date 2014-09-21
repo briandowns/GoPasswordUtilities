@@ -37,6 +37,7 @@ func main() {
 	p := gpu.GeneratePassword(10)
 	fmt.Println(p)
 	fmt.Printf("%x\n", p.MD5())
+}
 ```
 
 ### Create a new password object and get its information
@@ -52,7 +53,7 @@ func main() {
     fmt.Printf("Has Rating: %s\n", results.ComplexityRating())
 ```
 
-### Generate 10,000 passwords.
+### Generate thousands passwords.
 
 ```Go
     // On the fly compile and execution.  Better 
