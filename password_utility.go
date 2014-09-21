@@ -139,7 +139,7 @@ func (p *Password) SHA256(saltConf ...*SaltConf) ([32]byte, []byte) {
 // Generate a SHA256 sum for the given password.  If a SaltConf
 // pointer is given as a parameter a salt with the given
 // length will be returned with it included in the hash.
-func (p *Password) SHA256(saltConf interface{}) ([32]byte, []byte) {
+func (p *Password) SHA256(saltConf interface {}) ([32]byte, []byte) {
 	if len(saltConf) > 0 {
 		if saltConf {
 			salt := getRandomBytes(saltConf.Length)
