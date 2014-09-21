@@ -140,11 +140,9 @@ func (p *Password) SHA256(saltConf ...*SaltConf) ([32]byte, []byte) {
 // pointer is given as a parameter a salt with the given
 // length will be returned with it included in the hash.
 func (p *Password) SHA256(saltConf interface {}) ([32]byte, []byte) {
-	if len(saltConf) > 0 {
-		if saltConf {
-			salt := getRandomBytes(saltConf.Length)
-			return sha256.Sum256([]byte(fmt.Sprintf("%s%x", p.Pass, salt))), salt
-		}
+	if saltConf {
+		salt := getRandomBytes(saltConf.Length)
+		return sha256.Sum256([]byte(fmt.Sprintf("%s%x", p.Pass, salt))), salt
 	}
 	return sha256.Sum256([]byte(p.Pass)), nil
 }
