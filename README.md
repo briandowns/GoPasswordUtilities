@@ -70,8 +70,10 @@ func main() {
     
     // Hash a password that includes a salt
     p := gpu.GeneratePassword(10)
-    fmt.Println(p)
-    fmt.Printf("%x\n", p.MD5())
-    fmt.Printf("%x\n", p.MD5(&gpu.SaltConf{Length: 32}))    
+    fmt.Println(p.Pass)
+    hash1, _ := p.SHA256()
+    hash2, salt := p.SHA256(&gpu.SaltConf{Length: 32})
+    fmt.Printf("%x\n", hash1)
+    fmt.Printf("%x - %x\n", hash2, salt)   
 }
 ```
