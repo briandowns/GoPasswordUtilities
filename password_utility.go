@@ -96,7 +96,8 @@ func GenerateVeryStrongPassword(length int) *Password {
 	}
 }
 
-// Generate random bytes.
+// Generate random bytes.  This is for internal use in
+// the library itself.
 func getRandomBytes(length int) []byte {
 	randomData := make([]byte, length)
 	if _, err := rand.Read(randomData); err != nil {
@@ -163,7 +164,7 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 	matchLower := regexp.MustCompile(`[a-z]`)
 	matchUpper := regexp.MustCompile(`[A-Z]`)
 	matchNumber := regexp.MustCompile(`[0-9]`)
-	matchSpecial := regexp.MustCompile(`[\!@\#\$\%\^\&\*\(\\\)\-_\=\+,\.\?\/\:\;{}\[\]~]`)
+	matchSpecial := regexp.MustCompile(`[\!\@\#\$\%\^\&\*\(\\\)\-_\=\+\,\.\?\/\:\;\{\}\[\]~]`)
 
 	if p.Length < 8 {
 		log.Println("Password isn't long enough for evaluation.")
@@ -188,7 +189,6 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 		c.ContainsSpecial = true
 		c.Score += 1
 	}
-
 	return c, nil
 }
 

@@ -60,7 +60,7 @@ func main() {
     fmt.Printf("Has Rating: %s\n", results.ComplexityRating())
 ```
 
-### Generate thousands passwords.
+### Generate thousands of passwords.
 
 ```Go
     // On the fly compile and execution.  Better 
