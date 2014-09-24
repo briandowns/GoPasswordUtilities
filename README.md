@@ -50,7 +50,7 @@ func main() {
 ### Create a new password object and get its information
 
 ```Go
-    pass := gpu.NewPassword("secret12")
+    pass := gpu.New("secret12")
     fmt.Println(*pass)
     
     results, err := gpu.ProcessPassword(pass)

@@ -63,7 +63,7 @@ type SaltConf struct {
 
 // Used for user entered passwords as well as the
 // GeneratePassword function.
-func NewPassword(password string) *Password {
+func New(password string) *Password {
 	return &Password{Pass: password, Length: len(password)}
 }
 
@@ -79,7 +79,7 @@ func GeneratePassword(length int) *Password {
 			passwordBuffer.WriteString(string(char))
 		}
 	}
-	return NewPassword(passwordBuffer.String())
+	return New(passwordBuffer.String())
 }
 
 // Generate a "Very Strong" password.
