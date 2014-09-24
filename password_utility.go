@@ -167,7 +167,6 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 	matchSpecial := regexp.MustCompile(`[\!\@\#\$\%\^\&\*\(\\\)\-_\=\+\,\.\?\/\:\;\{\}\[\]~]`)
 
 	if p.Length < 8 {
-		log.Println("Password isn't long enough for evaluation.")
 		return nil, errors.New("Password isn't long enough for evaluation.")
 	} else {
 		c.Length = p.Length
