@@ -61,13 +61,13 @@ type SaltConf struct {
 	Length int
 }
 
-// Used for user entered passwords as well as the
-// GeneratePassword function.
+// New is used when a user enters a password as well as the
+// being called from the GeneratePassword function.
 func New(password string) *Password {
 	return &Password{Pass: password, Length: len(password)}
 }
 
-// Generate and return a password as a string and as a
+// GeneratePassword will generate and return a password as a string and as a
 // byte slice of the given length.
 func GeneratePassword(length int) *Password {
 	passwordBuffer := new(bytes.Buffer)
@@ -82,7 +82,7 @@ func GeneratePassword(length int) *Password {
 	return New(passwordBuffer.String())
 }
 
-// Generate a "Very Strong" password.
+// GenerateVeryStrongPassword will generate a "Very Strong" password.
 func GenerateVeryStrongPassword(length int) *Password {
 	for {
 		p := GeneratePassword(length)
@@ -96,8 +96,8 @@ func GenerateVeryStrongPassword(length int) *Password {
 	}
 }
 
-// Generate random bytes.  This is for internal use in
-// the library itself.
+// getRandomBytes will generate random bytes.  This is for internal
+// use in the library itself.
 func getRandomBytes(length int) []byte {
 	randomData := make([]byte, length)
 	if _, err := rand.Read(randomData); err != nil {
@@ -106,7 +106,7 @@ func getRandomBytes(length int) []byte {
 	return randomData
 }
 
-// Generate a MD5 sum for the given password.  If a SaltConf
+// MD5 sum for the given password.  If a SaltConf
 // pointer is given as a parameter a salt with the given
 // length will be returned with it included in the hash.
 func (p *Password) MD5(saltConf ...*SaltConf) ([16]byte, []byte) {
@@ -121,7 +121,7 @@ func (p *Password) MD5(saltConf ...*SaltConf) ([16]byte, []byte) {
 	return md5.Sum([]byte(p.Pass)), nil
 }
 
-// Generate a SHA256 sum for the given password.  If a SaltConf
+// SHA256 sum for the given password.  If a SaltConf
 // pointer is given as a parameter a salt with the given
 // length will be returned with it included in the hash.
 func (p *Password) SHA256(saltConf ...*SaltConf) ([32]byte, []byte) {
@@ -136,7 +136,7 @@ func (p *Password) SHA256(saltConf ...*SaltConf) ([32]byte, []byte) {
 	return sha256.Sum256([]byte(p.Pass)), nil
 }
 
-// Generate a SHA512 sum for the given password.  If a SaltConf
+// SHA512 sum for the given password.  If a SaltConf
 // pointer is given as a parameter a salt with the given
 // length will be returned with it included in the hash.
 func (p *Password) SHA512(saltConf ...*SaltConf) ([64]byte, []byte) {
@@ -151,14 +151,14 @@ func (p *Password) SHA512(saltConf ...*SaltConf) ([64]byte, []byte) {
 	return sha512.Sum512([]byte(p.Pass)), nil
 }
 
-// Get the length of the password.  This method is being put on the
-// password struct in case someone decides not to do a complexity
-// check.
+// GetLength will provide the length of the password.  This method is
+// being put on the password struct in case someone decides not to
+// do a complexity check.
 func (p *Password) GetLength() int {
 	return p.Length
 }
 
-// Parse the password and populate the PasswordComplexity struct.
+// ProcessPassword will parse the password and populate the PasswordComplexity struct.
 func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 	c := &PasswordComplexity{}
 	matchLower := regexp.MustCompile(`[a-z]`)
@@ -167,56 +167,56 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 	matchSpecial := regexp.MustCompile(`[\!\@\#\$\%\^\&\*\(\\\)\-_\=\+\,\.\?\/\:\;\{\}\[\]~]`)
 
 	if p.Length < 8 {
-		return nil, errors.New("Password isn't long enough for evaluation.")
+		return nil, errors.New("Password isn't long enough for evaluation")
 	} else {
 		c.Length = p.Length
 	}
 
 	if matchLower.MatchString(p.Pass) {
 		c.ContainsLower = true
-		c.Score += 1
+		c.Score++
 	}
 	if matchUpper.MatchString(p.Pass) {
 		c.ContainsUpper = true
-		c.Score += 1
+		c.Score++
 	}
 	if matchNumber.MatchString(p.Pass) {
 		c.ContainsNumber = true
-		c.Score += 1
+		c.Score++
 	}
 	if matchSpecial.MatchString(p.Pass) {
 		c.ContainsSpecial = true
-		c.Score += 1
+		c.Score++
 	}
 	return c, nil
 }
 
-// Get the score of the password.
+// GetScore will provide the score of the password.
 func (c *PasswordComplexity) GetScore() int {
 	return c.Score
 }
 
-// Get whether the password contains an upper case letter.
+// HasUpper indicates whether the password contains an upper case letter.
 func (c *PasswordComplexity) HasUpper() bool {
 	return c.ContainsUpper
 }
 
-// Get whether the password contains a lower case letter.
+// HasLower indicates whether the password contains a lower case letter.
 func (c *PasswordComplexity) HasLower() bool {
 	return c.ContainsLower
 }
 
-// Get whether the password contains a number.
+// HasNumber indicates whether the password contains a number.
 func (c *PasswordComplexity) HasNumber() bool {
 	return c.ContainsNumber
 }
 
-// Get whether the password contains a special character.
+// HasSpecial indicates whether the password contains a special character.
 func (c *PasswordComplexity) HasSpecial() bool {
 	return c.ContainsSpecial
 }
 
-// Return the rating for the password.
+// ComplexityRating provides the rating for the password.
 func (c *PasswordComplexity) ComplexityRating() string {
 	return passwordScores[c.Score]
 }
