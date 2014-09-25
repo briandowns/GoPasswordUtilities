@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-// Simple library for working with passwords in Go.
-//
-// All generated passwords are going to be a minimum of 8
-// characters in length.
-//
+/*
+ Simple library for working with passwords in Go.
+
+ All generated passwords are going to be a minimum of 8
+ characters in length.
+*/
 
 package GoPasswordUtilities
 
