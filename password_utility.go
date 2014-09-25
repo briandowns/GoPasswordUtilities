@@ -59,6 +59,8 @@ type PasswordComplexity struct {
 	ContainsSpecial bool
 }
 
+// User defined struct to provide as configuration
+// to hashing methods.
 type SaltConf struct {
 	Length int
 }
@@ -170,9 +172,9 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 
 	if p.Length < 8 {
 		return nil, errors.New("ERROR: password isn't long enough for evaluation")
-	} else {
-		c.Length = p.Length
 	}
+	
+	c.Length = p.Length
 
 	if matchLower.MatchString(p.Pass) {
 		c.ContainsLower = true
