@@ -43,11 +43,13 @@ var (
 		4: "Very Strong"}
 )
 
+// Where the initial data will be stored.
 type Password struct {
 	Pass   string
 	Length int
 }
 
+// PasswordComplext struct to be populated if called.
 type PasswordComplexity struct {
 	Length          int
 	Score           int
