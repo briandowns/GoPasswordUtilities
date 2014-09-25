@@ -43,13 +43,11 @@ var (
 		4: "Very Strong"}
 )
 
-// Where the initial data will be stored.
 type Password struct {
 	Pass   string
 	Length int
 }
 
-// PasswordComplext struct to be populated if called.
 type PasswordComplexity struct {
 	Length          int
 	Score           int
@@ -59,8 +57,6 @@ type PasswordComplexity struct {
 	ContainsSpecial bool
 }
 
-// User defined struct to provide as configuration
-// to hashing methods.
 type SaltConf struct {
 	Length int
 }
@@ -173,7 +169,7 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 	if p.Length < 8 {
 		return nil, errors.New("ERROR: password isn't long enough for evaluation")
 	}
-	
+
 	c.Length = p.Length
 
 	if matchLower.MatchString(p.Pass) {
