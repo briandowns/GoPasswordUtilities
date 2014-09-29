@@ -39,7 +39,7 @@ package main
 
 import (
 	"fmt"
-	gpu "github.com/bdowns328/GoPasswordUtilities"
+	gpu "github.com/briandowns/GoPasswordUtilities"
 )
 
 func main() {
