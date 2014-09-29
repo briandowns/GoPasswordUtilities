@@ -4,7 +4,7 @@ Simple library for working with passwords in Go (Golang).
 
 For more detail about the library and its features, reference your local godoc once installed.
 
-[![GoDoc](https://godoc.org/github.com/bdowns328/GoPasswordUtilities?status.svg)](https://godoc.org/github.com/bdowns328/GoPasswordUtilities)
+[![GoDoc](https://godoc.org/github.com/briandowns/GoPasswordUtilities?status.svg)](https://godoc.org/github.com/bdowns328/GoPasswordUtilities)
 
 or 
 
