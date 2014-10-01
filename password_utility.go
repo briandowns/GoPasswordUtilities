@@ -30,8 +30,8 @@ import (
 )
 
 var (
-	characters     = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+,.?/:;{}[]~"
-	
+	characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+,.?/:;{}[]~"
+
 	passwordScores = map[int]string{
 		0: "Horrible",
 		1: "Weak",
@@ -40,7 +40,7 @@ var (
 		4: "Very Strong"}
 
 	wordsLocation = map[string]string{
-		"mac": "",
+		"mac":    "",
 		"centos": "",
 		"debian": "",
 	}
@@ -58,6 +58,7 @@ type PasswordComplexity struct {
 	ContainsLower   bool
 	ContainsNumber  bool
 	ContainsSpecial bool
+	DictBased       bool
 }
 
 type SaltConf struct {
@@ -222,4 +223,10 @@ func (c *PasswordComplexity) HasSpecial() bool {
 // ComplexityRating provides the rating for the password.
 func (c *PasswordComplexity) ComplexityRating() string {
 	return passwordScores[c.Score]
+}
+
+// InDictionary will return true or false if it's been detected
+// that the given password is a dictionary based.
+func (c *PasswordComplexity) InDictionary() bool {
+	return c.DictBased
 }
