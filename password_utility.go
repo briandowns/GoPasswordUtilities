@@ -31,12 +31,19 @@ import (
 
 var (
 	characters     = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+,.?/:;{}[]~"
+	
 	passwordScores = map[int]string{
 		0: "Horrible",
 		1: "Weak",
 		2: "Medium",
 		3: "Strong",
 		4: "Very Strong"}
+
+	wordsLocation = map[string]string{
+		"mac": "",
+		"centos": "",
+		"debian": "",
+	}
 )
 
 type Password struct {
