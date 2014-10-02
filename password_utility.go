@@ -18,6 +18,7 @@
 package GoPasswordUtilities
 
 import (
+	"bufio"
 	"bytes"
 	"crypto/md5"
 	"crypto/rand"
@@ -26,24 +27,23 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
 	"regexp"
+	"strings"
+)
+
+const (
+	characters    = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+,.?/:;{}[]~"
+	wordsLocation = "/usr/share/dict/words"
 )
 
 var (
-	characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+,.?/:;{}[]~"
-
 	passwordScores = map[int]string{
 		0: "Horrible",
 		1: "Weak",
 		2: "Medium",
 		3: "Strong",
 		4: "Very Strong"}
-
-	wordsLocation = map[string]string{
-		"mac":    "",
-		"centos": "",
-		"debian": "",
-	}
 )
 
 type Password struct {
@@ -58,7 +58,7 @@ type PasswordComplexity struct {
 	ContainsLower   bool
 	ContainsNumber  bool
 	ContainsSpecial bool
-	DictBased       bool
+	DictionaryBased bool
 }
 
 type SaltConf struct {
@@ -193,6 +193,26 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 		c.Score++
 	}
 	return c, nil
+}
+
+// searchDict will search the words list for an occurance of the
+// given word.  Requires wamerican || wbritish || wordlist || words
+// to be installed.
+func searchDict(word string, result chan bool) {
+	file, err := os.Open(wordsLocation)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		if strings.Contains(strings.ToLower(scanner.Text()), word) {
+			fmt.Println(scanner.Text())
+		}
+		result <- true
+	}
 }
 
 // GetScore will provide the score of the password.
