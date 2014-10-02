@@ -1,6 +1,6 @@
 # GoPasswordUtilities
 
-[![GoDoc](https://godoc.org/github.com/briandowns/GoPasswordUtilities?status.svg)](https://godoc.org/github.com/briandowns/GoPasswordUtilities)
+[![GoDoc](https://godoc.org/github.com/briandowns/GoPasswordUtilities?status.svg)](https://godoc.org/github.com/briandowns/GoPasswordUtilities) [![Build Status](https://travis-ci.org/briandowns/GoPasswordUtilities.svg?branch=master)](https://travis-ci.org/briandowns/GoPasswordUtilities)
 
 Simple library for working with passwords in Go (Golang).  
 
