@@ -270,5 +270,5 @@ func (c *PasswordComplexity) ComplexityRating() string {
 // InDictionary will return true or false if it's been detected
 // that the given password is a dictionary based.
 func (c *PasswordComplexity) InDictionary() bool {
-	return c.DictBased
+	return c.DictionaryBased
 }
