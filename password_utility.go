@@ -76,6 +76,7 @@ func New(password string) *Password {
 func GeneratePassword(length int) *Password {
 	passwordBuffer := new(bytes.Buffer)
 	randBytes := make([]byte, length)
+
 	if _, err := rand.Read(randBytes); err == nil {
 		for j := 0; j < length; j++ {
 			tmpIndex := int(randBytes[j]) % len(characters)
@@ -90,10 +91,12 @@ func GeneratePassword(length int) *Password {
 func GenerateVeryStrongPassword(length int) *Password {
 	for {
 		p := GeneratePassword(length)
+
 		pc, err := ProcessPassword(p)
 		if err != nil {
 			log.Fatalln(err)
 		}
+
 		if pc.Score == 4 {
 			return p
 		}
@@ -115,10 +118,13 @@ func getRandomBytes(length int) []byte {
 // length will be returned with it included in the hash.
 func (p *Password) MD5(saltConf ...*SaltConf) ([16]byte, []byte) {
 	if len(saltConf) > 0 {
+
 		var saltLength int
+
 		for _, i := range saltConf[0:] {
 			saltLength = i.Length
 		}
+
 		salt := getRandomBytes(saltLength)
 		return md5.Sum([]byte(fmt.Sprintf("%s%x", p.Pass, salt))), salt
 	}
@@ -130,10 +136,13 @@ func (p *Password) MD5(saltConf ...*SaltConf) ([16]byte, []byte) {
 // length will be returned with it included in the hash.
 func (p *Password) SHA256(saltConf ...*SaltConf) ([32]byte, []byte) {
 	if len(saltConf) > 0 {
+
 		var saltLength int
+
 		for _, i := range saltConf[0:] {
 			saltLength = i.Length
 		}
+
 		salt := getRandomBytes(saltLength)
 		return sha256.Sum256([]byte(fmt.Sprintf("%s%x", p.Pass, salt))), salt
 	}
@@ -145,10 +154,13 @@ func (p *Password) SHA256(saltConf ...*SaltConf) ([32]byte, []byte) {
 // length will be returned with it included in the hash.
 func (p *Password) SHA512(saltConf ...*SaltConf) ([64]byte, []byte) {
 	if len(saltConf) > 0 {
+
 		var saltLength int
+
 		for _, i := range saltConf[0:] {
 			saltLength = i.Length
 		}
+
 		salt := getRandomBytes(saltLength)
 		return sha512.Sum512([]byte(fmt.Sprintf("%s%x", p.Pass, salt))), salt
 	}
@@ -196,7 +208,7 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 		c.Score++
 	}
 
-	if searchDict {
+	if searchDict(p.Pass) {
 		c.DictionaryBased = true
 		c.Score--
 	}
@@ -207,7 +219,6 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 // given word.  Requires wamerican || wbritish || wordlist || words
 // to be installed.
 func searchDict(word string) bool {
-	var result bool
 	file, err := os.Open(wordsLocation)
 	if err != nil {
 		log.Fatal(err)
@@ -219,11 +230,11 @@ func searchDict(word string) bool {
 
 	for scanner.Scan() {
 		if strings.Contains(strings.ToLower(scanner.Text()), word) {
-			fmt.Println(scanner.Text())
+			break
+			return true
 		}
-		result = true
-		break
 	}
+	return false
 }
 
 // GetScore will provide the score of the password.
