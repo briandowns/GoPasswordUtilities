@@ -180,17 +180,25 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 		c.ContainsLower = true
 		c.Score++
 	}
+
 	if matchUpper.MatchString(p.Pass) {
 		c.ContainsUpper = true
 		c.Score++
 	}
+
 	if matchNumber.MatchString(p.Pass) {
 		c.ContainsNumber = true
 		c.Score++
 	}
+
 	if matchSpecial.MatchString(p.Pass) {
 		c.ContainsSpecial = true
 		c.Score++
+	}
+
+	if searchDict {
+		c.DictionaryBased = true
+		c.Score--
 	}
 	return c, nil
 }
@@ -198,20 +206,23 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 // searchDict will search the words list for an occurance of the
 // given word.  Requires wamerican || wbritish || wordlist || words
 // to be installed.
-func searchDict(word string, result chan bool) {
+func searchDict(word string) bool {
+	var result bool
 	file, err := os.Open(wordsLocation)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	defer file.Close()
+
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
 		if strings.Contains(strings.ToLower(scanner.Text()), word) {
 			fmt.Println(scanner.Text())
 		}
-		result <- true
+		result = true
+		break
 	}
 }
 
