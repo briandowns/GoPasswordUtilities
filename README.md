@@ -1,6 +1,9 @@
 # GoPasswordUtilities
 
-Simple library for working with passwords in Go (Golang).
+Simple library for working with passwords in Go (Golang).  
+
+Complexity check will check for upper case letters, lower case letters, numbers, special characters 
+and also whether the password is dictionary based. 
 
 For more detail about the library and its features, reference your local godoc once installed.
 
@@ -60,6 +63,7 @@ func main() {
         fmt.Println(err)
     }
     fmt.Printf("Has Rating: %s\n", results.ComplexityRating())
+    fmt.Printf("%t\n", results.DictionaryBased)
 ```
 
 ### Generate thousands of passwords.
