@@ -70,7 +70,7 @@ type SaltConf struct {
 // being called from the GeneratePassword function.
 func New(password string) *Password {
 	return &Password{
-		Pass: password, 
+		Pass:   password,
 		Length: len(password),
 		&PasswordComplexity{},
 	}
