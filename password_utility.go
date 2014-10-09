@@ -69,10 +69,11 @@ type SaltConf struct {
 // New is used when a user enters a password as well as the
 // being called from the GeneratePassword function.
 func New(password string) *Password {
+	pc := PasswordComplexity{}
 	return &Password{
 		Pass:   password,
 		Length: len(password),
-		&PasswordComplexity{},
+		&pc,
 	}
 }
 
