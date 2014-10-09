@@ -49,6 +49,7 @@ var (
 type Password struct {
 	Pass   string
 	Length int
+	PC     *PasswordComplexity
 }
 
 type PasswordComplexity struct {
@@ -68,7 +69,11 @@ type SaltConf struct {
 // New is used when a user enters a password as well as the
 // being called from the GeneratePassword function.
 func New(password string) *Password {
-	return &Password{Pass: password, Length: len(password)}
+	return &Password{
+		Pass: password, 
+		Length: len(password),
+		&PasswordComplexity{},
+	}
 }
 
 // GeneratePassword will generate and return a password as a string and as a
@@ -175,7 +180,7 @@ func (p *Password) GetLength() int {
 }
 
 // ProcessPassword will parse the password and populate the PasswordComplexity struct.
-func ProcessPassword(p *Password) (*PasswordComplexity, error) {
+func (p *Password) ProcessPassword() error {
 	c := &PasswordComplexity{}
 	matchLower := regexp.MustCompile(`[a-z]`)
 	matchUpper := regexp.MustCompile(`[A-Z]`)
@@ -185,8 +190,6 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 	if p.Length < 8 {
 		return nil, errors.New("ERROR: password isn't long enough for evaluation")
 	}
-
-	c.Length = p.Length
 
 	if matchLower.MatchString(p.Pass) {
 		c.ContainsLower = true
