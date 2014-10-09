@@ -73,7 +73,6 @@ func New(password string) *Password {
 	return &Password{
 		Pass:   password,
 		Length: len(password),
-		&pc,
 	}
 }
 
@@ -98,7 +97,7 @@ func GenerateVeryStrongPassword(length int) *Password {
 	for {
 		p := GeneratePassword(length)
 
-		pc, err := ProcessPassword(p)
+		pc, err := p.ProcessPassword()
 		if err != nil {
 			log.Fatalln(err)
 		}
