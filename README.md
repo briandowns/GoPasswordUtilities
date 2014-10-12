@@ -28,7 +28,7 @@ could be in a broken state at times as well.
 ## Installation
 
 ```bash
-go get github.com/bdowns328/GoPasswordUtilities
+go get github.com/briandowns/GoPasswordUtilities
 ```
 
 ## Examples
