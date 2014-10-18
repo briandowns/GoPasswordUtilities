@@ -91,7 +91,6 @@ func GeneratePassword(length int) *Password {
 func GenerateVeryStrongPassword(length int) *Password {
 	for {
 		p := GeneratePassword(length)
-
 		pc, err := ProcessPassword(p)
 		if err != nil {
 			log.Fatalln(err)
@@ -118,7 +117,6 @@ func getRandomBytes(length int) []byte {
 // length will be returned with it included in the hash.
 func (p *Password) MD5(saltConf ...*SaltConf) ([16]byte, []byte) {
 	if len(saltConf) > 0 {
-
 		var saltLength int
 
 		for _, i := range saltConf[0:] {
@@ -136,7 +134,6 @@ func (p *Password) MD5(saltConf ...*SaltConf) ([16]byte, []byte) {
 // length will be returned with it included in the hash.
 func (p *Password) SHA256(saltConf ...*SaltConf) ([32]byte, []byte) {
 	if len(saltConf) > 0 {
-
 		var saltLength int
 
 		for _, i := range saltConf[0:] {
@@ -154,7 +151,6 @@ func (p *Password) SHA256(saltConf ...*SaltConf) ([32]byte, []byte) {
 // length will be returned with it included in the hash.
 func (p *Password) SHA512(saltConf ...*SaltConf) ([64]byte, []byte) {
 	if len(saltConf) > 0 {
-
 		var saltLength int
 
 		for _, i := range saltConf[0:] {
@@ -192,22 +188,18 @@ func ProcessPassword(p *Password) (*PasswordComplexity, error) {
 		c.ContainsLower = true
 		c.Score++
 	}
-
 	if matchUpper.MatchString(p.Pass) {
 		c.ContainsUpper = true
 		c.Score++
 	}
-
 	if matchNumber.MatchString(p.Pass) {
 		c.ContainsNumber = true
 		c.Score++
 	}
-
 	if matchSpecial.MatchString(p.Pass) {
 		c.ContainsSpecial = true
 		c.Score++
 	}
-
 	if searchDict(p.Pass) {
 		c.DictionaryBased = true
 		c.Score--
@@ -223,11 +215,9 @@ func searchDict(word string) bool {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-
 	for scanner.Scan() {
 		if strings.Contains(strings.ToLower(scanner.Text()), word) {
 			break
