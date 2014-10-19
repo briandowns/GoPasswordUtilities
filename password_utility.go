@@ -220,7 +220,6 @@ func searchDict(word string) bool {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		if strings.Contains(strings.ToLower(scanner.Text()), word) {
-			break
 			return true
 		}
 	}
