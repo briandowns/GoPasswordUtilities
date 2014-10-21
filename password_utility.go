@@ -47,8 +47,8 @@ var (
 )
 
 type Password struct {
-	Pass   string
-	Length int
+	Pass            string
+	Length          int
 	Score           int
 	ContainsUpper   bool
 	ContainsLower   bool
