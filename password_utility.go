@@ -24,7 +24,6 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"crypto/sha512"
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -170,7 +169,7 @@ func (p *Password) ProcessPassword() {
 	matchSpecial := regexp.MustCompile(`[\!\@\#\$\%\^\&\*\(\\\)\-_\=\+\,\.\?\/\:\;\{\}\[\]~]`)
 
 	if p.Length < 8 {
-		log.Println("password isn't long enough for evaluation")
+		log.Panicln("password isn't long enough for evaluation")
 	}
 
 	p.Length = p.Length
@@ -195,7 +194,6 @@ func (p *Password) ProcessPassword() {
 		p.DictionaryBased = true
 		p.Score--
 	}
-	return nil
 }
 
 // searchDict will search the words list for an occurance of the
