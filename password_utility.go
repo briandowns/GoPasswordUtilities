@@ -49,10 +49,6 @@ var (
 type Password struct {
 	Pass   string
 	Length int
-}
-
-type PasswordComplexity struct {
-	Length          int
 	Score           int
 	ContainsUpper   bool
 	ContainsLower   bool
@@ -91,12 +87,8 @@ func GeneratePassword(length int) *Password {
 func GenerateVeryStrongPassword(length int) *Password {
 	for {
 		p := GeneratePassword(length)
-		pc, err := ProcessPassword(p)
-		if err != nil {
-			log.Fatalln(err)
-		}
-
-		if pc.Score == 4 {
+		p.ProcessPassword()
+		if p.Score == 4 {
 			return p
 		}
 	}
@@ -170,41 +162,40 @@ func (p *Password) GetLength() int {
 	return p.Length
 }
 
-// ProcessPassword will parse the password and populate the PasswordComplexity struct.
-func ProcessPassword(p *Password) (*PasswordComplexity, error) {
-	c := &PasswordComplexity{}
+// ProcessPassword will parse the password and populate the Password struct attributes.
+func (p *Password) ProcessPassword() {
 	matchLower := regexp.MustCompile(`[a-z]`)
 	matchUpper := regexp.MustCompile(`[A-Z]`)
 	matchNumber := regexp.MustCompile(`[0-9]`)
 	matchSpecial := regexp.MustCompile(`[\!\@\#\$\%\^\&\*\(\\\)\-_\=\+\,\.\?\/\:\;\{\}\[\]~]`)
 
 	if p.Length < 8 {
-		return nil, errors.New("ERROR: password isn't long enough for evaluation")
+		log.Println("password isn't long enough for evaluation")
 	}
 
-	c.Length = p.Length
+	p.Length = p.Length
 
 	if matchLower.MatchString(p.Pass) {
-		c.ContainsLower = true
-		c.Score++
+		p.ContainsLower = true
+		p.Score++
 	}
 	if matchUpper.MatchString(p.Pass) {
-		c.ContainsUpper = true
-		c.Score++
+		p.ContainsUpper = true
+		p.Score++
 	}
 	if matchNumber.MatchString(p.Pass) {
-		c.ContainsNumber = true
-		c.Score++
+		p.ContainsNumber = true
+		p.Score++
 	}
 	if matchSpecial.MatchString(p.Pass) {
-		c.ContainsSpecial = true
-		c.Score++
+		p.ContainsSpecial = true
+		p.Score++
 	}
 	if searchDict(p.Pass) {
-		c.DictionaryBased = true
-		c.Score--
+		p.DictionaryBased = true
+		p.Score--
 	}
-	return c, nil
+	return nil
 }
 
 // searchDict will search the words list for an occurance of the
@@ -227,37 +218,37 @@ func searchDict(word string) bool {
 }
 
 // GetScore will provide the score of the password.
-func (c *PasswordComplexity) GetScore() int {
-	return c.Score
+func (p *Password) GetScore() int {
+	return p.Score
 }
 
 // HasUpper indicates whether the password contains an upper case letter.
-func (c *PasswordComplexity) HasUpper() bool {
-	return c.ContainsUpper
+func (p *Password) HasUpper() bool {
+	return p.ContainsUpper
 }
 
 // HasLower indicates whether the password contains a lower case letter.
-func (c *PasswordComplexity) HasLower() bool {
-	return c.ContainsLower
+func (p *Password) HasLower() bool {
+	return p.ContainsLower
 }
 
 // HasNumber indicates whether the password contains a number.
-func (c *PasswordComplexity) HasNumber() bool {
-	return c.ContainsNumber
+func (p *Password) HasNumber() bool {
+	return p.ContainsNumber
 }
 
 // HasSpecial indicates whether the password contains a special character.
-func (c *PasswordComplexity) HasSpecial() bool {
-	return c.ContainsSpecial
+func (p *Password) HasSpecial() bool {
+	return p.ContainsSpecial
 }
 
 // ComplexityRating provides the rating for the password.
-func (c *PasswordComplexity) ComplexityRating() string {
-	return passwordScores[c.Score]
+func (p *Password) ComplexityRating() string {
+	return passwordScores[p.Score]
 }
 
 // InDictionary will return true or false if it's been detected
 // that the given password is a dictionary based.
-func (c *PasswordComplexity) InDictionary() bool {
-	return c.DictionaryBased
+func (p *Password) InDictionary() bool {
+	return p.DictionaryBased
 }
