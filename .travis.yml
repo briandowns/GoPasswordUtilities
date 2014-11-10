@@ -1,8 +1,10 @@
 language: go
 go:
   - 1.3.1
+  - 1.3.3
 env:
   - GOARCH: amd64
+  - GOARCH: 386
 notifications:
   email:
     recipients:
