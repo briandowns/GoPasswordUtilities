@@ -169,10 +169,8 @@ func (p *Password) ProcessPassword() {
 	matchSpecial := regexp.MustCompile(`[\!\@\#\$\%\^\&\*\(\\\)\-_\=\+\,\.\?\/\:\;\{\}\[\]~]`)
 
 	if p.Length < 8 {
-		log.Panicln("password isn't long enough for evaluation")
+		log.Fatalln("password isn't long enough for evaluation")
 	}
-
-	p.Length = p.Length
 
 	if matchLower.MatchString(p.Pass) {
 		p.ContainsLower = true
